@@ -125,7 +125,7 @@ mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)
    byte *hashcode;
    char *content;
    mrb_value content_mrb, result_mrb;
-   char *result;
+   char result[100];
    char *hexcode = result;
    int i;
 
@@ -135,12 +135,10 @@ mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)
    hashcode = RMD((byte *)content + 2);
 
    for (i=0; i<RMDsize/8; i++) {
-      result += sprintf(hexcode, "%02x", hashcode[i]);
+      hexcode += sprintf(hexcode, "%02x", hashcode[i]);
    }
 
    result_mrb = mrb_str_new(mrb, result, (size_t)strlen(result));
-
-   free(result);
 
    return result_mrb;
 }

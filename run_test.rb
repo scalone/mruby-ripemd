@@ -19,7 +19,5 @@ MRuby::Build.new do |conf|
   toolchain :gcc
   conf.gembox 'default'
 
-  conf.gem :git => 'https://github.com/scalone/mruby-ripemd.git'
-
   conf.gem File.expand_path(File.dirname(__FILE__))
 end

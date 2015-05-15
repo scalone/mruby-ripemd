@@ -152,7 +152,7 @@ mrb_mruby_ripemd_gem_init(mrb_state* mrb)
 
   rmd160 = mrb_define_class(mrb, "RMD160", mrb->object_class);
 
-  mrb_define_class_method(mrb , qr, "_hexdigest", mrb_rmd160_s__hexdigest, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb , rmd160, "_hexdigest", mrb_rmd160_s__hexdigest, MRB_ARGS_REQ(1));
 }
 
 void

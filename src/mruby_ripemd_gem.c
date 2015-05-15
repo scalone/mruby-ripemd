@@ -132,7 +132,7 @@ mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)
    mrb_get_args(mrb, "S", &content_mrb);
 
    content = mrb_str_to_cstr(mrb, content_mrb);
-   hashcode = RMD((byte *)content + 2);
+   hashcode = RMD((byte *)content);
 
    for (i=0; i<RMDsize/8; i++) {
       hexcode += sprintf(hexcode, "%02x", hashcode[i]);

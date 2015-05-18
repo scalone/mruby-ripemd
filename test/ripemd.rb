@@ -7,6 +7,6 @@ if Object.const_defined?(:RMD160)
 
   assert("hexdigest must work") do
     msg = RMD160.hexdigest("something")
-    assert_equal(msg, "76202357772b26db74cf62e36efb6d69f68e48ab")
+    assert_equal(msg, "f152359131ecb9fc397fb4bac2f4bb1b9b90b55f")
   end
 end

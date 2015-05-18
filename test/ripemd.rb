@@ -1,8 +1,12 @@
 # RMD160 test
 
 if Object.const_defined?(:RMD160)
+  assert("Digest module") do
+    Digest.class == Module
+  end
+
   assert("RMD160") do
-    RMD160.class == Module
+    RMD160.class == Class
   end
 
   assert("hexdigest must work") do

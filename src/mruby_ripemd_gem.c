@@ -31,7 +31,7 @@ byte *RMD(byte *message)
    dword         MDbuf[RMDsize/32];   /* contains (A, B, C, D(, E))   */
    static byte   hashcode[RMDsize/8]; /* for final hash-value         */
    dword         X[16];               /* current 16-word chunk        */
-   word          i;                   /* counter                      */
+   dword         i;                   /* counter                      */
    dword         length;              /* length in bytes of message   */
    dword         nbytes;              /* # of bytes not yet processed */
 
@@ -62,62 +62,6 @@ byte *RMD(byte *message)
 }
 
 /********************************************************************/
-
-byte *RMDbinary(char *fname)
-/*
- * returns RMD(message in file fname)
- * fname is read as binary data.
- */
-{
-   FILE         *mf;                  /* pointer to file <fname>      */
-   byte          data[1024];          /* contains current mess. block */
-   dword         nbytes;              /* length of this block         */
-   dword         MDbuf[RMDsize/32];   /* contains (A, B, C, D(, E))   */
-   static byte   hashcode[RMDsize/8]; /* for final hash-value         */
-   dword         X[16];               /* current 16-word chunk        */
-   word          i, j;                /* counters                     */
-   dword         length[2];           /* length in bytes of message   */
-   dword         offset;              /* # of unprocessed bytes at    */
-                                      /*          call of MDfinish    */
-
-   /* initialize */
-   if ((mf = fopen(fname, "rb")) == NULL) {
-      fprintf(stderr, "\nRMDbinary: cannot open file \"%s\".\n",
-              fname);
-      exit(1);
-   }
-   MDinit(MDbuf);
-   length[0] = 0;
-   length[1] = 0;
-
-   while ((nbytes = fread(data, 1, 1024, mf)) != 0) {
-      /* process all complete blocks */
-      for (i=0; i<(nbytes>>6); i++) {
-         for (j=0; j<16; j++)
-            X[j] = BYTES_TO_DWORD(data+64*i+4*j);
-         compress(MDbuf, X);
-      }
-      /* update length[] */
-      if (length[0] + nbytes < length[0])
-         length[1]++;                  /* overflow to msb of length */
-      length[0] += nbytes;
-   }
-
-   /* finish: */
-   offset = length[0] & 0x3C0;   /* extract bytes 6 to 10 inclusive */
-   MDfinish(MDbuf, data+offset, length[0], length[1]);
-
-   for (i=0; i<RMDsize/8; i+=4) {
-      hashcode[i]   =  MDbuf[i>>2];
-      hashcode[i+1] = (MDbuf[i>>2] >>  8);
-      hashcode[i+2] = (MDbuf[i>>2] >> 16);
-      hashcode[i+3] = (MDbuf[i>>2] >> 24);
-   }
-
-   fclose(mf);
-
-   return (byte *)hashcode;
-}
 
 mrb_value
 mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)

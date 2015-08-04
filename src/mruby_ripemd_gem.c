@@ -87,6 +87,28 @@ mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)
    return result_mrb;
 }
 
+mrb_value
+mrb_rmd160_s__digest(mrb_state *mrb, mrb_value self)
+{
+   byte *hashcode;
+   char *content;
+   mrb_value content_mrb;
+   char result[100];
+   char *hexcode = result;
+   int i;
+
+   mrb_get_args(mrb, "S", &content_mrb);
+
+   content = mrb_str_to_cstr(mrb, content_mrb);
+   hashcode = RMD((byte *)content);
+
+   for (i=0; i<RMDsize/8; i++) {
+      hexcode += sprintf(hexcode, "%02x", hashcode[i]);
+   }
+
+   return mrb_str_new(mrb, (char *)hashcode, 20);
+}
+
 void
 mrb_mruby_ripemd_gem_init(mrb_state* mrb)
 {
@@ -94,6 +116,7 @@ mrb_mruby_ripemd_gem_init(mrb_state* mrb)
 
   rmd160 = mrb_define_class(mrb, "RMD160", mrb->object_class);
   mrb_define_class_method(mrb , rmd160, "hexdigest", mrb_rmd160_s__hexdigest, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb , rmd160, "digest", mrb_rmd160_s__digest, MRB_ARGS_REQ(1));
 }
 
 void

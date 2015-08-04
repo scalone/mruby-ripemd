@@ -20,6 +20,8 @@
 
 /********************************************************************/
 
+#include <stdint.h>
+
 /* typedef 8 and 32 bit types, resp.  */
 /* adapt these, if necessary,
    for your operating system and compiler */

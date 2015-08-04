@@ -90,7 +90,7 @@ mrb_rmd160_s__hexdigest(mrb_state *mrb, mrb_value self)
 void
 mrb_mruby_ripemd_gem_init(mrb_state* mrb)
 {
-  struct RClass *rmd160, *digest;
+  struct RClass *rmd160;
 
   rmd160 = mrb_define_class(mrb, "RMD160", mrb->object_class);
   mrb_define_class_method(mrb , rmd160, "hexdigest", mrb_rmd160_s__hexdigest, MRB_ARGS_REQ(1));
